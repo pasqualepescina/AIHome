@@ -1,2 +1,2 @@
 # AIHome
-Projecto de Pasquale y Taisir
+Proyecto de Pasquale y Taisir
