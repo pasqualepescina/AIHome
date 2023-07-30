@@ -55,23 +55,3 @@ if scraped_annuncio_items is not None:
     save_to_txt(file_path, scraped_annuncio_items)
 else:
     logging.warning("Failed to scrape or no data found.")
-In this updated script, we've added logging statements using the logging module to provide information about important steps in the scraping and saving process. Logging levels are set to logging.INFO, so you'll see informative logs about each step.
-
-For example, you will see logs like:
-
-vbnet
-Copy code
-2023-07-30 12:34:56,789 - INFO - Sending HTTP GET request to https://www.tecnocasa.it/annunci/immobili/lombardia/milano.html
-2023-07-30 12:34:57,123 - INFO - Parsing the content using BeautifulSoup
-2023-07-30 12:34:57,456 - INFO - Scraped data saved to scraped_data.txt
-The logs will help you understand what the script is doing and provide insights in case any issues occur during scraping or saving the data.
-
-Remember that you can adjust the logging level to logging.DEBUG, logging.WARNING, or other levels depending on how much information you want to see in the logs.
-
-
-
-Stop generating
-Send a message
-
-···
-Free Research Preview. ChatGPT may produce inaccurate information about people, places, or facts. ChatGPT July 20 Version
