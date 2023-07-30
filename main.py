@@ -1,3 +1,4 @@
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
@@ -13,11 +14,15 @@ def scrape_web(urls):
                 # Parse the content of the web page using BeautifulSoup
                 soup = BeautifulSoup(response.content, 'html.parser')
 
-                # Your scraping logic here
-                # For demonstration purposes, let's assume we want to scrape all the text from the page.
-                # You can modify this part according to your specific scraping needs.
-                scraped_text = soup.get_text()
-                scraped_data.append(scraped_text)
+                # Extract all the HTML tags and their corresponding text
+                html_labels = [tag.name for tag in soup.find_all()]
+                scraped_text = [tag.get_text() for tag in soup.find_all()]
+
+                # Combine the HTML labels and text into a DataFrame
+                df = pd.DataFrame({'HTML_Label': html_labels, 'Text': scraped_text})
+
+                # Append the DataFrame to the list of scraped data
+                scraped_data.append(df)
 
             else:
                 print(f"Failed to scrape {url}. Status code: {response.status_code}")
@@ -28,11 +33,11 @@ def scrape_web(urls):
     return scraped_data
 
 # Example usage:
-urls_to_scrape = ['https://www.immobiliare.it/agenzie-immobiliari/224672/palermo-via-delle-magnolie/?criterio=rilevanza&msclkid=db4e8a7e323117e046d0eec049e4e5ca&utm_source=bing&utm_medium=cpc&utm_campaign=search%7Cagency%7Ccontract%7Cit%7Call%7Cit&utm_term=%2Fagenzie-immobiliari%2F%20agenzia&utm_content=agency%7Ccard%7Ccontract%7Cmunicipality%7Czone%7Cfilter%7Cit%7Call%7Cit%7Cdsa']
+urls_to_scrape = ['https://example.com/page1', 'https://example.com/page2', 'https://example.com/page3']
 scraped_results = scrape_web(urls_to_scrape)
 
-# Print the scraped data from each URL
-for i, result in enumerate(scraped_results, 1):
-    print(f"Scraped data from URL {i}:")
-    print(result)
-    print("-" * 40)
+# Concatenate the list of DataFrames into a single DataFrame
+final_df = pd.concat(scraped_results, ignore_index=True)
+
+# Print the resulting DataFrame
+print(final_df)
