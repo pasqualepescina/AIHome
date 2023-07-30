@@ -2,7 +2,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.1" name="viewport"/>
-<meta content="XySDMs4IgArQQrR3rJ9cJYnX26WzWo0umJTrwsbt" name="csrf-token"/>
+<meta content="RD55wlG0XpwPsj9z5MhRAJYs0KMUfvayxuAR1zmQ" name="csrf-token"/>
 <title>Annunci di case in vendita in provincia di Milano - Tecnocasa.it</title>
 <meta content="Annunci di case in vendita in provincia di Milano. Cerca tra migliaia di immobili" name="description">
 <meta content="MKautx_6-Jv0E6VAs8uJPkZG1wLRejHrW68L_yWI2Xo" name="google-site-verification">
@@ -897,7 +897,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.1" name="viewport"/>
-<meta content="XySDMs4IgArQQrR3rJ9cJYnX26WzWo0umJTrwsbt" name="csrf-token"/>
+<meta content="RD55wlG0XpwPsj9z5MhRAJYs0KMUfvayxuAR1zmQ" name="csrf-token"/>
 <title>Annunci di case in vendita in provincia di Milano - Tecnocasa.it</title>
 <meta content="Annunci di case in vendita in provincia di Milano. Cerca tra migliaia di immobili" name="description">
 <meta content="MKautx_6-Jv0E6VAs8uJPkZG1wLRejHrW68L_yWI2Xo" name="google-site-verification">
@@ -937,7 +937,7 @@
 ----------------------------------------
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.1" name="viewport"/>
 ----------------------------------------
-<meta content="XySDMs4IgArQQrR3rJ9cJYnX26WzWo0umJTrwsbt" name="csrf-token"/>
+<meta content="RD55wlG0XpwPsj9z5MhRAJYs0KMUfvayxuAR1zmQ" name="csrf-token"/>
 ----------------------------------------
 <title>Annunci di case in vendita in provincia di Milano - Tecnocasa.it</title>
 ----------------------------------------

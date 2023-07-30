@@ -18,7 +18,7 @@ def scrape_annuncio_items(url):
             soup = BeautifulSoup(response.content, 'html.parser')
 
             # Find all the listings with class "annuncio-item" on the page
-            annuncio_items = soup.find_all('li', class_='annuncio-item')
+            annuncio_items = soup.find_all()
 
             # Return the list of scrapped data
             return annuncio_items
@@ -51,7 +51,7 @@ scraped_annuncio_items = scrape_annuncio_items(url_to_scrape)
 
 # Save the scraped data to a text file
 if scraped_annuncio_items is not None:
-    file_path = 'scraped_data.txt'
+    file_path = 'scraped_data_tecnocasa.txt'
     save_to_txt(file_path, scraped_annuncio_items)
 else:
     logging.warning("Failed to scrape or no data found.")
