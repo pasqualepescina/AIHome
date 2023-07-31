@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import logging
+import os
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -112,12 +113,18 @@ def scrape_multiple_urls(urls_file):
     except Exception as e:
         logging.error(f"Error while reading URLs from {urls_file}: {str(e)}")
 
+# Create a folder named "Tecnocasa" if it doesn't exist
+output_folder = 'Tecnocasa'
+if not os.path.exists(output_folder):
+    os.makedirs(output_folder)
 # MASTER URL TO SCRAPE AND GET ALK THE OTHERS
 url_to_scrape = 'https://www.tecnocasa.it/annunci/immobili/lombardia/milano.html'
 
 # Scrape the data
 scraped_annuncio_items = scrape_url_master_tecnocasa(url_to_scrape)
 
+# Change the current working directory to the output folder
+os.chdir(output_folder)
 # Save the scraped data to a text file
 if scraped_annuncio_items is not None:
     file_path = 'urls_to_scrape_tecnocasa.txt'
