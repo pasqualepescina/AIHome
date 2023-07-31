@@ -7,7 +7,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 def scrape_url_master_tecnocasa(url):
     try:
-        # Send an HTTP GET request to the URL
+        # Send an HTTP GET request to the URL 
         logging.debug(f"Sending HTTP GET request to {url}")
         response = requests.get(url)
 
@@ -48,9 +48,7 @@ def save_to_txt(file_path, data):
         logging.error(f"Error while saving to {file_path}: {str(e)}")
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-def scrape_tecnocasa_data(url):
+def scrape_childs_data_from_url(url):
     """
     Scrape data from a single URL.
 
@@ -73,8 +71,8 @@ def scrape_tecnocasa_data(url):
             soup = BeautifulSoup(response.content, 'html.parser')
 
             # Extract the title of the page (for demonstration purposes)
-            title = soup.title.string.strip()
-            return title
+            all_child_info = str(soup.findAll())
+            return all_child_info
 
         else:
             logging.error(f"Failed to scrape {url}. Status code: {response.status_code}")
@@ -86,37 +84,33 @@ def scrape_tecnocasa_data(url):
 
 def scrape_multiple_urls(urls_file):
     """
-    Scrape data from multiple URLs listed in a file.
+    Scrape data from multiple URLs listed in a file and create files with scraped data.
 
     Parameters:
         urls_file (str): Path to the file containing the URLs to scrape.
 
     Returns:
-        list: A list of extracted data from each URL (for demonstration, we return the titles of the pages).
-              Modify the scrape_tecnocasa_data function to extract other relevant information as needed.
+        None
     """
     try:
         with open(urls_file, 'r') as file:
             urls = file.read().splitlines()
 
-        scraped_data = []
         for url in urls:
-            data = scrape_tecnocasa_data(url)
+            # Scrape data from each URL
+            data = scrape_childs_data_from_url(url)
             if data:
-                scraped_data.append(data)
+                # Create a file with the name as the last part of the URL without '.html'
+                filename = url.split('/')[-1].replace('.html', '') + '.txt'
 
-        return scraped_data
+                # Write the scraped data to the file
+                with open(filename, 'w', encoding='utf-8') as output_file:
+                    output_file.write(data)
+
+                logging.info(f"Data scraped from {url} and saved to {filename}")
 
     except Exception as e:
         logging.error(f"Error while reading URLs from {urls_file}: {str(e)}")
-        return None
-# Print the scraped data
-if scraped_data:
-    logging.info("Scraped Data:")
-    for data in scraped_data:
-        logging.info(data)
-else:
-    logging.warning("Failed to scrape or no data found.")
 
 # MASTER URL TO SCRAPE AND GET ALK THE OTHERS
 url_to_scrape = 'https://www.tecnocasa.it/annunci/immobili/lombardia/milano.html'
@@ -130,3 +124,10 @@ if scraped_annuncio_items is not None:
     save_to_txt(file_path, scraped_annuncio_items)
 else:
     logging.warning("Failed to scrape or no data found.")
+
+# File containing the URLs to scrape
+urls_file_path = 'urls_to_scrape_tecnocasa.txt'
+
+# Scrape data from the listed URLs and create files for each URL
+scrape_multiple_urls(urls_file_path)
+
