@@ -2,116 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 import logging
 import os
+import json
+import pandas as pd
+from scrape_master_url import scrape_url_master_tecnocasa, save_to_txt
+from scrape_html_childs import scrape_html_files,scrape_multiple_urls
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-def scrape_url_master_tecnocasa(url):
-    try:
-        # Send an HTTP GET request to the URL 
-        logging.debug(f"Sending HTTP GET request to {url}")
-        response = requests.get(url)
-
-        # Check if the request was successful
-        if response.status_code == 200:
-            # Parse the content of the web page using BeautifulSoup
-            logging.debug("Parsing the content using BeautifulSoup")
-            soup = BeautifulSoup(response.content, 'html.parser')
-
-            # Find the <template> tag with the slot="cities-seo-list" attribute
-            template_tag = soup.find('template', attrs={'slot': 'cities-seo-list'})
-
-            # If the <template> tag is found, find all the <span> tags with URLs under it
-            if template_tag:
-                logging.debug("Get Urls from further scrapping")
-                cities_spans = template_tag.find_all('span')
-                urls = [span.a['href'] for span in cities_spans if span.a]
-
-                return urls
-
-        else:
-            logging.error(f"Failed to scrape {url}. Status code: {response.status_code}")
-            return None
-
-    except Exception as e:
-        logging.error(f"Error while scraping {url}: {str(e)}")
-        return None
-
-def save_to_txt(file_path, data):
-    try:
-        with open(file_path, 'w', encoding='utf-8') as file:
-            for item in data:
-                file.write(str(item) + "\n")
-
-        logging.info(f"Scraped data saved to {file_path}")
-
-    except Exception as e:
-        logging.error(f"Error while saving to {file_path}: {str(e)}")
-
-# Configure logging
-def scrape_childs_data_from_url(url):
-    """
-    Scrape data from a single URL.
-
-    Parameters:
-        url (str): The URL to scrape.
-
-    Returns:
-        str: The extracted data from the URL (for demonstration, we return the title of the page).
-             Modify this function to extract other relevant information based on your requirements.
-    """
-    try:
-        # Send an HTTP GET request to the URL
-        logging.debug(f"Sending HTTP GET request to {url}")
-        response = requests.get(url)
-
-        # Check if the request was successful
-        if response.status_code == 200:
-            # Parse the content of the web page using BeautifulSoup
-            logging.debug("Parsing the content using BeautifulSoup")
-            soup = BeautifulSoup(response.content, 'html.parser')
-
-            # Extract the title of the page (for demonstration purposes)
-            all_child_info = str(soup.findAll())
-            return all_child_info
-
-        else:
-            logging.error(f"Failed to scrape {url}. Status code: {response.status_code}")
-            return None
-
-    except Exception as e:
-        logging.error(f"Error while scraping {url}: {str(e)}")
-        return None
-
-def scrape_multiple_urls(urls_file):
-    """
-    Scrape data from multiple URLs listed in a file and create files with scraped data.
-
-    Parameters:
-        urls_file (str): Path to the file containing the URLs to scrape.
-
-    Returns:
-        None
-    """
-    try:
-        with open(urls_file, 'r') as file:
-            urls = file.read().splitlines()
-
-        for url in urls:
-            # Scrape data from each URL
-            data = scrape_childs_data_from_url(url)
-            if data:
-                # Create a file with the name as the last part of the URL without '.html'
-                filename = url.split('/')[-1].replace('.html', '') + '.txt'
-
-                # Write the scraped data to the file
-                with open(filename, 'w', encoding='utf-8') as output_file:
-                    output_file.write(data)
-
-                logging.info(f"Data scraped from {url} and saved to {filename}")
-
-    except Exception as e:
-        logging.error(f"Error while reading URLs from {urls_file}: {str(e)}")
 
 # Create a folder named "Tecnocasa" if it doesn't exist
 output_folder = 'Tecnocasa'
@@ -137,4 +34,26 @@ urls_file_path = 'urls_to_scrape_tecnocasa.txt'
 
 # Scrape data from the listed URLs and create files for each URL
 scrape_multiple_urls(urls_file_path)
+html_files_path = r"C:\Users\pesci\OneDrive\Desktop\AIHome\AIHome\Tecnocasa"
+# Get a list of all the files in the directory
+html_files = [os.path.join(html_files_path, file) for file in os.listdir(html_files_path) if file.endswith(".html")]
+
+# Call the scrape_html_files function
+
+# Loop through the URLs and scrape data from each one
+results_scrapper = scrape_html_files(html_files)
+
+# Combine the JSON data from all files into a single dictionary
+combined_data = {}
+for data in results_scrapper:
+    for key, value in data.items():
+        combined_data.setdefault(key, []).extend(value)
+
+# Create a DataFrame directly from the combined_data dictionary
+df = pd.DataFrame(combined_data)
+
+# Drop duplicate rows
+df.drop_duplicates(inplace=True)
+
+    
 
