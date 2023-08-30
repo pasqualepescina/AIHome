@@ -54,6 +54,8 @@ df = pd.DataFrame(combined_data)
 
 # Drop duplicate rows
 df.drop_duplicates(inplace=True)
-
+# Save the DataFrame to CSV
+output_csv = os.path.join(html_files_path, "data_clean.csv")
+df.to_csv(output_csv, index=False)
     
 
