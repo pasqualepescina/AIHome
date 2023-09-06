@@ -73,7 +73,6 @@ def extract_estate_data(soup):
     # Initialize an empty dictionary to store the extracted data
     estate_data = {}
     # Specify the order of occurrence of the tag names
-    tag_names = ['estate-price', 'estate-title', 'estate-subtitle', 'estate-rooms', 'estate-surface']
 
     # Find each occurrence of estate-price, estate-title, estate-subtitle, estate-rooms, estate-surface
     tag_names = ['estate-price', 'estate-title', 'estate-subtitle', 'estate-rooms', 'estate-surface']
