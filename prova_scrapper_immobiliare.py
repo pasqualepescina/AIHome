@@ -1,12 +1,11 @@
 from bs4 import BeautifulSoup
 import logging
 import requests
-import pandas as pd 
+import pandas as pd
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-# Create a list to store the scraped data
-data = []
-def scrape_url_master_casait(url):
+
+def scrape_url_immobiliare(url):
     try:
         logging.debug(f"Sending HTTP GET request to {url}")
         response = requests.get(url)
@@ -15,7 +14,7 @@ def scrape_url_master_casait(url):
             logging.debug("Parsing the content using BeautifulSoup")
             soup = BeautifulSoup(response.content, 'html.parser')
             property_listings = str(soup.findAll())
-            class_names = ['in-card__title', 'nd-figure__content','in-realEstateListCard__priceOnTop', 'in-realEstateListCard__features' ]
+            class_names = ['in-card__title', 'nd-figure__content', 'in-realEstateListCard__priceOnTop', 'in-realEstateListCard__features']
             elements = soup.find_all(class_=class_names)
 
             # Create a list to store the scraped data
@@ -31,17 +30,14 @@ def scrape_url_master_casait(url):
                 if len(row_data) == len(class_names):
                     data.append(row_data.copy())
                     row_data.clear()
-            save_to_txt('Immobiliare/immobiliare_master.html',property_listings )
-
+           # save_to_txt('Immobiliare/immobiliare_master.html', property_listings)
 
             return data
-            
-            #return property_listings
 
     except Exception as e:
         logging.error(f"Error while scraping {url}: {str(e)}")
         return None
-    
+
 def save_to_txt(file_path, data):
     try:
         with open(file_path, 'w', encoding='utf-8') as file:
@@ -52,12 +48,22 @@ def save_to_txt(file_path, data):
     except Exception as e:
         logging.error(f"Error while saving to {file_path}: {str(e)}")
 
-url_to_scrape = 'https://www.immobiliare.it/vendita-case/milano/'
-casait_info = scrape_url_master_casait(url_to_scrape)
+base_url = 'https://www.immobiliare.it/vendita-case/milano/?pag='
+max_pages = 1000  # Adjust this based on the number of pages you want to scrape
 
-if casait_info is not None:   
-    df = pd.DataFrame(casait_info)
-    df.to_csv('Immobiliare/immobiliare_clean', )
+# Create a list to store all the scraped data
+all_data = []
+
+for page in range(1, max_pages + 1):
+    url_to_scrape = f'{base_url}{page}'
+    casait_info = scrape_url_immobiliare(url_to_scrape)
+
+    if casait_info is not None:
+        all_data.extend(casait_info)
+
+if all_data:
+    df = pd.DataFrame(all_data)
+    df.to_csv('Immobiliare/immobiliare_clean.csv', index=False)
 
     print(df)
 else:
