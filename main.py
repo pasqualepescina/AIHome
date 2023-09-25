@@ -11,7 +11,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 # Create a folder named "Tecnocasa" if it doesn't exist
 # MASTER URL TO SCRAPE AND GET ALK THE OTHERS
-urls_masters_to_scrappe = ["https://www.tecnocasa.it/annunci/immobili/lombardia/milano.html", "https://www.immobiliare.it/vendita-case/milano/?pag="]
+#urls_masters_to_scrappe = ["https://www.tecnocasa.it/annunci/immobili/lombardia/milano.html", "https://www.immobiliare.it/vendita-case/milano/?pag="]
+urls_masters_to_scrappe = ["https://www.immobiliare.it/vendita-case/milano/?pag="]
 
 # Scrape the data
 for url in urls_masters_to_scrappe:

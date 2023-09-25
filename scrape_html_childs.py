@@ -137,15 +137,15 @@ def extract_estate_data(soup):
 
     return estate_data
 
-def scrape_url_immobiliare(url):
+def scrape_url_immobiliare(url,file_path, response):
     try:
-        logging.debug(f"Sending HTTP GET request to {url}")
-        response = requests.get(url)
+
 
         if response.status_code == 200:
             logging.debug("Parsing the content using BeautifulSoup")
             soup = BeautifulSoup(response.content, 'html.parser')
             property_listings = str(soup.findAll())
+            #save_to_txt(file_path,property_listings)
             class_names = ['in-card__title', 'nd-figure__content', 'in-realEstateListCard__priceOnTop', 'in-realEstateListCard__features']
             elements = soup.find_all(class_=class_names)
 
