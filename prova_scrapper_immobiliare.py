@@ -14,6 +14,8 @@ def scrape_url_immobiliare(url):
             logging.debug("Parsing the content using BeautifulSoup")
             soup = BeautifulSoup(response.content, 'html.parser')
             property_listings = str(soup.findAll())
+            df = pd.DataFrame(property_listings)
+            df.to_html(df)
             class_names = ['in-card__title', 'nd-figure__content', 'in-realEstateListCard__priceOnTop', 'in-realEstateListCard__features']
             elements = soup.find_all(class_=class_names)
 
@@ -48,23 +50,24 @@ def save_to_txt(file_path, data):
     except Exception as e:
         logging.error(f"Error while saving to {file_path}: {str(e)}")
 
-base_url = 'https://www.immobiliare.it/vendita-case/milano/?pag='
-max_pages = 1000  # Adjust this based on the number of pages you want to scrape
+base_url = 'https://www.immobiliare.it/vendita-case/milano/?pag=1'
+#max_pages = 1000  # Adjust this based on the number of pages you want to scrape
 
 # Create a list to store all the scraped data
 all_data = []
 
-for page in range(1, max_pages + 1):
-    url_to_scrape = f'{base_url}{page}'
-    casait_info = scrape_url_immobiliare(url_to_scrape)
+#for page in range(1, max_pages + 1):
+    #url_to_scrape = f'{base_url}{page}'
+    #casait_info = scrape_url_immobiliare(url_to_scrape)
+casait_info = scrape_url_immobiliare(base_url)
 
-    if casait_info is not None:
-        all_data.extend(casait_info)
+    #if casait_info is not None:
+        #all_data.extend(casait_info)
 
-if all_data:
-    df = pd.DataFrame(all_data)
-    df.to_csv('Immobiliare/immobiliare_clean.csv', index=False)
+#if all_data:
+    #df = pd.DataFrame(all_data)
+    #df.to_csv('Immobiliare/immobiliare_clean.csv', index=False)
 
-    print(df)
-else:
-    logging.warning("Failed to scrape or no data found.")
+    #print(df)
+#else:
+    #logging.warning("Failed to scrape or no data found.")

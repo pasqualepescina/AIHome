@@ -46,19 +46,16 @@ def scrape_url_master(url):
                 logging.debug("Data saved to CSV")
 
         elif 'immobiliare' in url:
-            print('ho presso tag immo')
             all_data = []
             max_pages = 1000
             output_folder = 'Immobiliare'
-            file_path = r'C:\Users\pesci\OneDrive\Desktop\AIHome\AIHome\Immobiliare'
-            print("2")
             if not os.path.exists(output_folder):
                 os.makedirs(output_folder)
             for page in range(1, max_pages + 1):
                 url_to_scrape = f'{url}{page}'
                 logging.debug(f"Sending HTTP GET request to {url}")
                 response = requests.get(url_to_scrape)
-                immobiliare_info = scrape_url_immobiliare(url_to_scrape,file_path, response)
+                immobiliare_info = scrape_url_immobiliare(url_to_scrape, response, page)
                 
                 if immobiliare_info is not None:
                     all_data.extend(immobiliare_info)

@@ -127,7 +127,7 @@ def extract_estate_data(soup):
     # Specify the order of occurrence of the tag names
 
     # Find each occurrence of estate-price, estate-title, estate-subtitle, estate-rooms, estate-surface
-    tag_names = ['estate-price', 'estate-title', 'estate-subtitle', 'estate-rooms', 'estate-surface']
+    tag_names = ['estate-price', 'estate-title', 'estate-subtitle', 'estate-rooms', 'estate-surface', 'estate-bathrooms']
     for tag_name in tag_names:
         elements = soup.find_all(lambda tag: tag.name == 'template' and tag.get('slot') == tag_name)
         if elements:
@@ -137,7 +137,7 @@ def extract_estate_data(soup):
 
     return estate_data
 
-def scrape_url_immobiliare(url,file_path, response):
+def scrape_url_immobiliare(url, response, page):
     try:
 
 
@@ -145,7 +145,10 @@ def scrape_url_immobiliare(url,file_path, response):
             logging.debug("Parsing the content using BeautifulSoup")
             soup = BeautifulSoup(response.content, 'html.parser')
             property_listings = str(soup.findAll())
-            #save_to_txt(file_path,property_listings)
+            directory = r'C:\Users\pesci\OneDrive\Desktop\AIHome\AIHome\Immobiliare'
+            file='\{}'.format(page)
+            file_path = directory+file
+            save_to_txt(file_path,property_listings)
             class_names = ['in-card__title', 'nd-figure__content', 'in-realEstateListCard__priceOnTop', 'in-realEstateListCard__features']
             elements = soup.find_all(class_=class_names)
 
